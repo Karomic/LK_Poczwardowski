@@ -10,8 +10,9 @@
             />
          </div>
       </div>
-      <Table :content="tableContent" :config="tableConfig" />
+      <Table :content="tableContent" :config="tableConfig" @open="openEdit" />
    </div>
+   <Edit v-show="isVisible" @close="closeEdit" @save="saveEdit" :row="row" />
 </template>
 <script>
 import Table from '@/components/Table.vue'
@@ -19,8 +20,9 @@ import { computed, onMounted, reactive } from 'vue'
 import { filterList, mapList } from './listHelper'
 import dummy from '@/assets/dummy.json'
 import timeout from 'q'
+import Edit from '@/components/Edit.vue'
 export default {
-   components: { Table },
+   components: { Table, Edit },
    setup() {
       const tableConfig = {
          columns: [
@@ -57,6 +59,25 @@ export default {
          state.loading = false
       })
       return { tableContent, tableConfig, onInput }
+   },
+   data() {
+      return {
+         isVisible: false,
+         row: {}
+      }
+   },
+   methods: {
+      openEdit($event) {
+         this.isVisible = true
+         this.row = $event
+         this.name = this.row.name
+      },
+      closeEdit() {
+         this.isVisible = false
+      },
+      saveEdit(savedData) {
+         console.log(savedData)
+      }
    }
 }
 </script>

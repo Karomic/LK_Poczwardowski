@@ -14,9 +14,10 @@
          <tbody v-if="tableConfig.content.length != 0">
             <tr
                v-for="row in tableConfig.content"
-               @click="selectRow(row)"
+               @dblclick="selectRow(row)"
                :key="row.key"
                class="table-row is-clickable"
+               @click="open(row)"
             >
                <th
                   v-for="column in tableConfig.columns"
@@ -53,6 +54,18 @@ export default {
       }))
       const selectRow = row => emit('select', row)
       return { tableConfig, selectRow }
+   },
+   methods: {
+      open(row) {
+         this.$emit('open', row)
+      }
+      // filterList = (item, search) => {
+      //    const keysToFilter = ['name', 'status', 'tags']
+      //    return Object.entries(item).some(
+      //       ([key, value]) =>
+      //          keysToFilter.includes(key) && value.toString().toLowerCase().includes(search.toLowerCase())
+      //    )
+      // }
    }
 }
 </script>
